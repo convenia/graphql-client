@@ -7,7 +7,7 @@ class GraphQLException
     /**
      * var array
      */
-    protected $error;
+    protected $errors;
 
     public function __construct($errors)
     {

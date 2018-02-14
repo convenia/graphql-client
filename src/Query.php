@@ -3,18 +3,17 @@
 namespace Convenia\GraphQLClient;
 
 use Convenia\GraphQLClient\Http\GraphQLRequest;
+use Convenia\GraphQLClient\Helpers\GraphQLUrlBuilder;
 
 class Query extends GraphQLRequest
 {
     /**
-     * @var string
+     * @param  int     $id
+     * @param  array      $arguments
+     * @param  array|null $fields
+     * @return array
      */
-    protected $queryName;
-
-    /**
-     * @var string
-     */
-    protected $baseQuery = '/v1/graphql?query=query';
+    public $queryType = 'query';
 
     /**
      *
@@ -23,7 +22,8 @@ class Query extends GraphQLRequest
      */
     public function list(array $fields = [])
     {
-        $url = $this->buildListUrl($fields);
+        $url = new GraphQLUrlBuilder($this);
+        $url = $url->buildListUrl($fields);
 
         return $this->send($url);
     }
@@ -35,31 +35,10 @@ class Query extends GraphQLRequest
      */
     public function single($id, array $fields = [])
     {
-        $url = $this->buildSingleUrl($id, $fields);
+        $url = new GraphQLUrlBuilder($this);
+        $url = $url->buildSingleUrl($id, $fields);
 
         return $this->send($url);
     }
 
-    /**
-     * @param  array $fields
-     * @return string
-     */
-    private function buildListUrl($fields)
-    {
-        $fields = $this->buildFields($fields);
-
-        return "{$this->baseQuery}{{$this->queryName}{{$fields}}}";
-    }
-
-    /**
-     * @param int $id
-     * @param  array $fields
-     * @return string
-     */
-    private function buildSingleUrl($id, $fields)
-    {
-        $fields = $this->buildFields($fields);
-
-        return "{$this->baseQuery}{{$this->queryName}(id:{$id}){{$fields}}}";
-    }
 }

@@ -3,23 +3,22 @@
 namespace Convenia\GraphQLClient;
 
 use Convenia\GraphQLClient\Http\GraphQLRequest;
+use Convenia\GraphQLClient\Helpers\GraphQLUrlBuilder;
 
 class Mutation extends GraphQLRequest
 {
-    /**
-     * @var string
-     */
-    protected $baseMutation = '/v1/graphql?query=mutation';
-
     /**
      * @param  int     $id
      * @param  array      $arguments
      * @param  array|null $fields
      * @return array
      */
+    public $queryType = 'mutation';
+
     public function update($id, array $arguments, array $fields = null)
     {
-        $url = $this->buildUpdateUrl($id, $arguments, $fields);
+        $url = new GraphQLUrlBuilder($this);
+        $url = $url->buildUpdateUrl($id, $arguments, $fields);
 
         return $this->send($url);
     }
@@ -31,23 +30,10 @@ class Mutation extends GraphQLRequest
      */
     public function mutate(array $arguments, array $fields = null)
     {
-        $url = $this->buildUrl($arguments, $fields);
+        $url = new GraphQLUrlBuilder($this);
+        $url = $url->buildUrl($arguments, $fields);
 
         return $this->send($url);
-    }
-
-    /**
-     * @param  int $id
-     * @param  array  $arguments
-     * @param  array|null $fields
-     * @return String
-     */
-    public function buildUpdateUrl($id, array $arguments, $fields = null)
-    {
-        $arguments = $this->buildArguments($arguments);
-        $fields = $this->buildFields($fields);
-
-        return "{$this->baseUrl}{$this->baseMutation}{{$this->queryName}(id:{$id}, {$arguments}){{$fields}}}";
     }
 
 }
