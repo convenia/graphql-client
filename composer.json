@@ -3,6 +3,7 @@
     "description": "Client to make graphql requests",
     "type": "library",
     "require": {
+        "php": ">=7.0",
         "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
