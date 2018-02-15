@@ -25,10 +25,10 @@ abstract class GraphQLRequest
 
     protected $headers;
 
-    public function __construct(Client $client, $baseUrl, $headers = [])
+    public function __construct($baseUrl, $headers = [])
     {
-        $this->client = $client;
         $this->baseUrl = $baseUrl;
+        $this->client = new Client(['base_uri'=> $baseUrl]);
         $this->headers = $headers;
     }
 

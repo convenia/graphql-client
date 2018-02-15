@@ -40,7 +40,7 @@ class User
 
     public static function create($userId, $data, $returnParams = [])
     {
-        $mutation = new UpdateUserMutation($this->client, $this->baseUrl);
+        $mutation = new UpdateUserMutation($this->baseUrl);
 
         $mutation->update($userId, $data, $returnParams);
     }
