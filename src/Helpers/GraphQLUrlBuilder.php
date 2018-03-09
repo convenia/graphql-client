@@ -10,7 +10,6 @@ class GraphQLUrlBuilder
     protected $queryType;
 
     protected $baseUrl;
-
     protected $queryName;
 
     public function __construct($query)
