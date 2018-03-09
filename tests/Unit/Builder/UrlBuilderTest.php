@@ -91,4 +91,18 @@ class UrlBuilderTest extends TestCase
         $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery(id:1, name:"Input name",description:"Input description"){first,second,third}}';
         $this->assertEquals($expectedUrl, $url);
     }
+
+    public function test_paginate_url_with_empty_fields()
+    {
+        $url = $this->builder->buildPaginateUrl(5, 1, []);
+        $expectedUrl = "http://testurl.com/v1/graphql?query=query{testQuery(limit:5,page:1){data{id,name,description},total,per_page}}";
+        $this->assertEquals($expectedUrl, $url);
+    }
+
+    public function test_paginate_url_with_input_fields()
+    {
+        $url = $this->builder->buildPaginateUrl(5, 1, $this->testArray);
+        $expectedUrl = "http://testurl.com/v1/graphql?query=query{testQuery(limit:5,page:1){data{first,second,third},total,per_page}}";
+        $this->assertEquals($expectedUrl, $url);
+    }
 }

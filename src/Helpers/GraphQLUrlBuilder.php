@@ -80,6 +80,19 @@ class GraphQLUrlBuilder
     }
 
     /**
+     * @param  integer $limit  limit per page
+     * @param  integer $page   page number
+     * @param  array   $fields output fields
+     * @return string
+     */
+    public function buildPaginateUrl($limit = 1, $page = 1, $fields)
+    {
+        $fields = $this->buildFIelds($fields);
+
+        return "{$this->baseUrl}?query={$this->queryType}{{$this->queryName}(limit:{$limit},page:{$page}){data{{$fields}},total,per_page}}";
+    }
+
+    /**
      * @param  Arrray $data Input arguments to send
      * @return string S
      */
