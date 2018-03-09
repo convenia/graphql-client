@@ -41,4 +41,18 @@ class Query extends GraphQLRequest
         return $this->send($url);
     }
 
+    /**
+     * @param  integer $limit
+     * @param  integer $page
+     * @param  array   $fields
+     * @return array
+     */
+    public function paginate($limit = 1, $page = 1, array $fields)
+    {
+        $url = new GraphQLUrlBuilder($this);
+        $url = $url->buildPaginateUrl($limit, $page, $fields);
+
+        return $this->send($url);
+    }
+
 }
