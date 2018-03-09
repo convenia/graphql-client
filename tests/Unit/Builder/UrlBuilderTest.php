@@ -85,7 +85,7 @@ class UrlBuilderTest extends TestCase
         $this->assertEquals($expectedUrl, $url);
     }
 
-    public function test_build_update_url_with_input_fields($value='')
+    public function test_build_update_url_with_input_fields()
     {
         $url = $this->builder->buildUpdateUrl(1, $this->testArguments, $this->testArray);
         $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery(id:1, name:"Input name",description:"Input description"){first,second,third}}';
