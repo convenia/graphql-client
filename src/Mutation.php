@@ -15,6 +15,14 @@ class Mutation extends GraphQLRequest
      */
     public $queryType = 'mutation';
 
+    public function create(array $arguments, array $fields = null)
+    {
+        $url = new GraphQLUrlBuilder($this);
+        $url = $url->buildUrl($arguments, $fields);
+
+        return $this->send($url);
+    }
+
     public function update($id, array $arguments, array $fields = null)
     {
         $url = new GraphQLUrlBuilder($this);

@@ -8,7 +8,7 @@ namespace Convenia\GraphQLClient\Helpers;
 class GraphQLUrlBuilder
 {
     protected $queryType;
-
+    protected $enums;
     protected $baseUrl;
     protected $queryName;
 
@@ -18,6 +18,7 @@ class GraphQLUrlBuilder
         $this->queryType = $query->queryType;
         $this->queryName = $query->getQueryName();
         $this->outputParams = $query->getOutputParams();
+        $this->enums = $query->enums;
     }
 
     /**
@@ -97,9 +98,14 @@ class GraphQLUrlBuilder
      */
     protected function buildArguments($data)
     {
-        $args = substr(json_encode($data, JSON_UNESCAPED_UNICODE), 1, -1);
+        $arguments = substr(json_encode($data, JSON_UNESCAPED_UNICODE), 1, -1);
+        $arguments = preg_replace('/"([^"]+)"\s*:\s*/', '$1:', $arguments);
 
-        return preg_replace('/"([^"]+)"\s*:\s*/', '$1:', $args);
+        if (empty($this->enums)) {
+            return $arguments;
+        }
+
+        return $this->buildEnums($data, $arguments);
     }
 
     /**
@@ -114,6 +120,23 @@ class GraphQLUrlBuilder
         $fields = empty($fields) ? $this->outputParams : $fields;
 
         return implode(',', $fields);
+    }
+
+    protected function buildEnums($data, $arguments): string
+    {
+        $enums = array_intersect_key(
+            $data,
+            array_flip($this->enums)
+        );
+
+        $oldValues = array_map(function ($enum) {
+            return '"'.$enum.'"';
+        }, $enums);
+
+        $oldValues = array_values($oldValues);
+        $newValues = array_values($enums);
+
+        return str_replace($oldValues, $newValues, $arguments);
     }
 
 }

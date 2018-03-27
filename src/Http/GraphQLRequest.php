@@ -25,6 +25,8 @@ abstract class GraphQLRequest
 
     protected $headers;
 
+    public $enums = [];
+
     public function __construct($baseUrl, $headers = [])
     {
         $this->baseUrl = $baseUrl;

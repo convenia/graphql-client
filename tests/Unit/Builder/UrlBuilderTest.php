@@ -105,4 +105,17 @@ class UrlBuilderTest extends TestCase
         $expectedUrl = "http://testurl.com/v1/graphql?query=query{testQuery(limit:5,page:1){data{first,second,third},total,per_page}}";
         $this->assertEquals($expectedUrl, $url);
     }
+
+    public function test_build_with_enum()
+    {
+        $testArguments = [
+            'name' => 'Input name',
+            'description' => 'Input description',
+            'gender' => 'MALE'
+        ];
+        $builder = new GraphQLUrlBuilder($this->queryEnum);
+        $url = $builder->buildUrl($testArguments);
+        $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery(name:"Input name",description:"Input description",gender:MALE)}';
+        $this->assertEquals($expectedUrl, $url);
+    }
 }
