@@ -37,7 +37,7 @@ class UrlBuilderTest extends TestCase
     public function test_build_url_without_fields()
     {
         $url = $this->builder->buildUrl($this->testArray);
-        $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery("first","second","third")}';
+        $expectedUrl = '?query=query{testQuery("first","second","third")}';
         $this->assertEquals($expectedUrl, $url);
     }
 
@@ -45,14 +45,14 @@ class UrlBuilderTest extends TestCase
     {
         $fields = ['fourth', 'fifth', 'sixth'];
         $url = $this->builder->buildUrl($this->testArray, $fields);
-        $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery("first","second","third"){fourth,fifth,sixth}}';
+        $expectedUrl = '?query=query{testQuery("first","second","third"){fourth,fifth,sixth}}';
         $this->assertEquals($expectedUrl, $url);
     }
 
     public function test_build_list_url_with_empty_fields()
     {
         $url = $this->builder->buildListUrl([]);
-        $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery{id,name,description}}';
+        $expectedUrl = '?query=query{testQuery{id,name,description}}';
 
         $this->assertEquals($expectedUrl, $url);
     }
@@ -60,49 +60,49 @@ class UrlBuilderTest extends TestCase
     public function test_build_list_url_with_input_fields()
     {
         $url = $this->builder->buildListUrl($this->testArray);
-        $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery{first,second,third}}';
+        $expectedUrl = '?query=query{testQuery{first,second,third}}';
         $this->assertEquals($expectedUrl, $url);
     }
 
     public function test_build_single_url_with_empty_fields($value='')
     {
         $url = $this->builder->buildSingleUrl(1, []);
-        $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery(id:1){id,name,description}}';
+        $expectedUrl = '?query=query{testQuery(id:1){id,name,description}}';
         $this->assertEquals($expectedUrl, $url);
     }
 
     public function test_build_single_url_with_input_fields()
     {
         $url = $this->builder->buildSingleUrl(1, $this->testArray);
-        $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery(id:1){first,second,third}}';
+        $expectedUrl = '?query=query{testQuery(id:1){first,second,third}}';
         $this->assertEquals($expectedUrl, $url);
     }
 
     public function test_build_update_url_with_empty_fields()
     {
         $url = $this->builder->buildUpdateUrl(1, $this->testArguments, []);
-        $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery(id:1, name:"Input name",description:"Input description"){id,name,description}}';
+        $expectedUrl = '?query=query{testQuery(id:1, name:"Input name",description:"Input description"){id,name,description}}';
         $this->assertEquals($expectedUrl, $url);
     }
 
     public function test_build_update_url_with_input_fields()
     {
         $url = $this->builder->buildUpdateUrl(1, $this->testArguments, $this->testArray);
-        $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery(id:1, name:"Input name",description:"Input description"){first,second,third}}';
+        $expectedUrl = '?query=query{testQuery(id:1, name:"Input name",description:"Input description"){first,second,third}}';
         $this->assertEquals($expectedUrl, $url);
     }
 
     public function test_paginate_url_with_empty_fields()
     {
         $url = $this->builder->buildPaginateUrl(5, 1, []);
-        $expectedUrl = "http://testurl.com/v1/graphql?query=query{testQuery(limit:5,page:1){data{id,name,description},total,per_page}}";
+        $expectedUrl = "?query=query{testQuery(limit:5,page:1){data{id,name,description},total,per_page}}";
         $this->assertEquals($expectedUrl, $url);
     }
 
     public function test_paginate_url_with_input_fields()
     {
         $url = $this->builder->buildPaginateUrl(5, 1, $this->testArray);
-        $expectedUrl = "http://testurl.com/v1/graphql?query=query{testQuery(limit:5,page:1){data{first,second,third},total,per_page}}";
+        $expectedUrl = "?query=query{testQuery(limit:5,page:1){data{first,second,third},total,per_page}}";
         $this->assertEquals($expectedUrl, $url);
     }
 
@@ -115,7 +115,7 @@ class UrlBuilderTest extends TestCase
         ];
         $builder = new GraphQLUrlBuilder($this->queryEnum);
         $url = $builder->buildUrl($testArguments);
-        $expectedUrl = 'http://testurl.com/v1/graphql?query=query{testQuery(name:"Input name",description:"Input description",gender:MALE)}';
+        $expectedUrl = '?query=query{testQuery(name:"Input name",description:"Input description",gender:MALE)}';
         $this->assertEquals($expectedUrl, $url);
     }
 }

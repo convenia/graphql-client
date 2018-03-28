@@ -14,7 +14,6 @@ class GraphQLUrlBuilder
 
     public function __construct($query)
     {
-        $this->baseUrl = $query->getBaseUrl();
         $this->queryType = $query->queryType;
         $this->queryName = $query->getQueryName();
         $this->outputParams = $query->getOutputParams();
@@ -34,12 +33,12 @@ class GraphQLUrlBuilder
         $arguments = $this->buildArguments($arguments);
 
         if (is_null($fields)) {
-            return "{$this->baseUrl}?query={$this->queryType}{{$this->queryName}({$arguments})}";
+            return "?query={$this->queryType}{{$this->queryName}({$arguments})}";
         }
 
         $fields = $this->buildFields($fields);
 
-        return "{$this->baseUrl}?query={$this->queryType}{{$this->queryName}({$arguments}){{$fields}}}";
+        return "?query={$this->queryType}{{$this->queryName}({$arguments}){{$fields}}}";
     }
 
     /**
@@ -53,7 +52,7 @@ class GraphQLUrlBuilder
         $arguments = $this->buildArguments($arguments);
         $fields = $this->buildFields($fields);
 
-        return "{$this->baseUrl}?query={$this->queryType}{{$this->queryName}(id:{$id}, {$arguments}){{$fields}}}";
+        return "?query={$this->queryType}{{$this->queryName}(id:{$id}, {$arguments}){{$fields}}}";
     }
 
     /**
@@ -64,7 +63,7 @@ class GraphQLUrlBuilder
     {
         $fields = $this->buildFields($fields);
 
-        return "{$this->baseUrl}?query={$this->queryType}{{$this->queryName}{{$fields}}}";
+        return "?query={$this->queryType}{{$this->queryName}{{$fields}}}";
     }
 
     /**
@@ -76,7 +75,7 @@ class GraphQLUrlBuilder
     {
         $fields = $this->buildFields($fields);
 
-        return "{$this->baseUrl}?query={$this->queryType}{{$this->queryName}(id:{$id}){{$fields}}}";
+        return "?query={$this->queryType}{{$this->queryName}(id:{$id}){{$fields}}}";
     }
 
     /**
@@ -89,7 +88,7 @@ class GraphQLUrlBuilder
     {
         $fields = $this->buildFIelds($fields);
 
-        return "{$this->baseUrl}?query={$this->queryType}{{$this->queryName}(limit:{$limit},page:{$page}){data{{$fields}},total,per_page}}";
+        return "?query={$this->queryType}{{$this->queryName}(limit:{$limit},page:{$page}){data{{$fields}},total,per_page}}";
     }
 
     /**
