@@ -17,16 +17,13 @@ class Mutation extends GraphQLRequest
 
     public function create(array $arguments, array $fields = null)
     {
-        $url = new GraphQLPayloadBuilder($this);
-        $url = $url->buildUrl($arguments, $fields);
-
-        return $this->send($url);
+        return $this->mutate($arguments, $fields);
     }
 
     public function update($id, array $arguments, array $fields = null)
     {
-        $url = new GraphQLUrlBuilder($this);
-        $url = $url->buildUpdateUrl($id, $arguments, $fields);
+        $builder = new GraphQLPayloadBuilder($this);
+        $payload = $builder->buildUpdateUrl($id, $arguments, $fields);
 
         return $this->send($url);
     }
@@ -38,10 +35,10 @@ class Mutation extends GraphQLRequest
      */
     public function mutate(array $arguments, array $fields = null)
     {
-        $url = new GraphQLUrlBuilder($this);
-        $url = $url->buildUrl($arguments, $fields);
+        $builder = new GraphQLPayloadBuilder($this);
+        $payload = $builder->buildGraph($arguments, $fields);
 
-        return $this->send($url);
+        return $this->send($payload);
     }
 
 }
