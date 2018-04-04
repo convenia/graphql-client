@@ -142,11 +142,12 @@ class GraphQLPayloadBuilder
 
         return "{ {$graph} } ";
     }
-    
+
     /**
-     * @param  integer $limit  limit per page
-     * @param  integer $page   page number
-     * @param  array   $fields output fields
+     * @param int $limit
+     * @param int $page
+     * @param $arguments
+     * @param $fields
      * @return string
      */
     public function buildSearch($limit = 1, $page = 1, $arguments, $fields)

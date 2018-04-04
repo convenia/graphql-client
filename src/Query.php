@@ -57,4 +57,18 @@ class Query extends GraphQLRequest
         return $this->send($payload);
     }
 
+    /**
+     * @param array $arguments
+     * @param array $fields
+     * @param int $limit
+     * @param int $page
+     * @return array
+     */
+    public function search(array $arguments, array $fields, $limit = 1, $page = 1)
+    {
+        $payload = new GraphQLPayloadBuilder($this);
+        $payload = $payload->buildSearch($limit, $page, $arguments, $fields);
+
+        return $this->send($payload);
+    }
 }
