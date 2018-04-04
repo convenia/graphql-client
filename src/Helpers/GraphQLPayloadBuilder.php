@@ -142,5 +142,18 @@ class GraphQLPayloadBuilder
 
         return "{ {$graph} } ";
     }
+    
+    /**
+     * @param  integer $limit  limit per page
+     * @param  integer $page   page number
+     * @param  array   $fields output fields
+     * @return string
+     */
+    public function buildSearch($limit = 1, $page = 1, $arguments, $fields)
+    {
+        $arguments = $this->buildArguments($arguments);
+        $fields = $this->createGraph($fields);
 
+        return "{$this->queryType} { {$this->queryName}(limit:{$limit},page:{$page},{$arguments}){data {$fields} }}";
+    }
 }
