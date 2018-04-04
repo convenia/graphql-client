@@ -23,9 +23,9 @@ class Mutation extends GraphQLRequest
     public function update($id, array $arguments, array $fields = null)
     {
         $builder = new GraphQLPayloadBuilder($this);
-        $payload = $builder->buildUpdateUrl($id, $arguments, $fields);
+        $payload = $builder->buildUpdate($id, $arguments, $fields);
 
-        return $this->send($url);
+        return $this->send($payload);
     }
 
     /**
