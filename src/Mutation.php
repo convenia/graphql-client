@@ -41,4 +41,12 @@ class Mutation extends GraphQLRequest
         return $this->send($payload);
     }
 
+    public function mutateWithoutParams(array $arguments)
+    {
+        $builder = new GraphQLPayloadBuilder($this);
+        $payload = $builder->buildGraphWithoutFields($arguments);
+
+        return $this->send($payload);
+    }
+
 }
