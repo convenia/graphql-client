@@ -64,7 +64,6 @@ class GraphQLResponse
     protected function decodeResponse($response)
     {
         $response = $response->getBody()->getContents();
-        var_dump($response);
 
         return json_decode($response, true);
     }

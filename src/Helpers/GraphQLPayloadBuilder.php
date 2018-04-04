@@ -28,17 +28,12 @@ class GraphQLPayloadBuilder
      *
      * @return string  The graphQl query string
      */
-    public function buildUrl(array $arguments, $fields = null)
+    public function buildGraph(array $arguments, $fields = null)
     {
-        // $arguments = $this->buildArguments($arguments);
+        $arguments = $this->buildArguments($arguments);
+        $graph = $this->createGraph($fields);
 
-        // if (is_null($fields)) {
-        //     return "?query={$this->queryType}{{$this->queryName}({$arguments})}";
-        // }
-
-        // $fields = $this->buildFields($fields);
-
-        // return "?query={$this->queryType}{{$this->queryName}({$arguments}){{$fields}}}";
+        return "{$this->queryType} { {$this->queryName}({$arguments}) {$graph} }";
     }
 
     /**
@@ -47,12 +42,12 @@ class GraphQLPayloadBuilder
      * @param  array|null $fields
      * @return String
      */
-    public function buildUpdateUrl($id, array $arguments, $fields = null)
+    public function buildUpdate($id, array $arguments, $fields = null)
     {
-        // $arguments = $this->buildArguments($arguments);
-        // $fields = $this->buildFields($fields);
+        $arguments = $this->buildArguments($arguments);
+        $fields = $this->createGraph($fields);
 
-        // return "?query={$this->queryType}{{$this->queryName}(id:{$id}, {$arguments}){{$fields}}}";
+        return "{$this->queryType} { {$this->queryName}(id:{$id} {$arguments}) {$graph} }";
     }
 
     /**
@@ -61,7 +56,7 @@ class GraphQLPayloadBuilder
      */
     public function buildList($fields)
     {
-        $fields = $this->buildFields($fields);
+        $fields = $this->createGraph($fields);
 
         return "{$this->queryType} { {$this->queryName} { {$fields} } }";
     }
@@ -86,7 +81,7 @@ class GraphQLPayloadBuilder
      */
     public function buildPaginate($limit = 1, $page = 1, $fields)
     {
-        $fields = $this->buildFIelds($fields);
+        $fields = $this->createGraph($fields);
 
         return "{$this->queryType} { {$this->queryName}(limit:{$limit},page:{$page}){data{$fields}},total,per_page }";
     }
@@ -105,20 +100,6 @@ class GraphQLPayloadBuilder
         }
 
         return $this->buildEnums($data, $arguments);
-    }
-
-    /**
-     * Transforms the desired output fields into a json string
-     *
-     * @param  array  $fields Array containing all the desired output fields
-     *
-     * @return string
-     */
-    protected function buildFields($fields = [])
-    {
-        $fields = empty($fields) ? $this->outputParams : $fields;
-
-        return implode(',', $fields);
     }
 
     protected function buildEnums($data, $arguments): string
