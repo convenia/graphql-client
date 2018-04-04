@@ -3,7 +3,7 @@
 namespace Convenia\GraphQLClient;
 
 use Convenia\GraphQLClient\Http\GraphQLRequest;
-use Convenia\GraphQLClient\Helpers\GraphQLUrlBuilder;
+use Convenia\GraphQLClient\Helpers\GraphQLPayloadBuilder;
 
 class Mutation extends GraphQLRequest
 {
@@ -17,7 +17,7 @@ class Mutation extends GraphQLRequest
 
     public function create(array $arguments, array $fields = null)
     {
-        $url = new GraphQLUrlBuilder($this);
+        $url = new GraphQLPayloadBuilder($this);
         $url = $url->buildUrl($arguments, $fields);
 
         return $this->send($url);

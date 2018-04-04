@@ -3,7 +3,7 @@
 namespace Convenia\GraphQLClient;
 
 use Convenia\GraphQLClient\Http\GraphQLRequest;
-use Convenia\GraphQLClient\Helpers\GraphQLUrlBuilder;
+use Convenia\GraphQLClient\Helpers\GraphQLPayloadBuilder;
 
 class Query extends GraphQLRequest
 {
@@ -22,10 +22,12 @@ class Query extends GraphQLRequest
      */
     public function list(array $fields = [])
     {
-        $url = new GraphQLUrlBuilder($this);
-        $url = $url->buildListUrl($fields);
+        $payload = new GraphQLPayloadBuilder($this);
+        $payload = $payload->buildList($fields);
 
-        return $this->send($url);
+        var_dump($payload);
+
+        return $this->send($payload);
     }
 
     /**
@@ -35,10 +37,10 @@ class Query extends GraphQLRequest
      */
     public function single($id, array $fields = [])
     {
-        $url = new GraphQLUrlBuilder($this);
-        $url = $url->buildSingleUrl($id, $fields);
+        $payload = new GraphQLPayloadBuilder($this);
+        $payload = $payload->buildSingle($id, $fields);
 
-        return $this->send($url);
+        return $this->send($payload);
     }
 
     /**
@@ -49,10 +51,10 @@ class Query extends GraphQLRequest
      */
     public function paginate($limit = 1, $page = 1, array $fields)
     {
-        $url = new GraphQLUrlBuilder($this);
-        $url = $url->buildPaginateUrl($limit, $page, $fields);
+        $payload = new GraphQLPayloadBuilder($this);
+        $payload = $payload->buildPaginate($limit, $page, $fields);
 
-        return $this->send($url);
+        return $this->send($payload);
     }
 
 }

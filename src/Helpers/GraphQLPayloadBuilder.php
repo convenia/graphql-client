@@ -3,9 +3,9 @@
 namespace Convenia\GraphQLClient\Helpers;
 
 /**
- * GraphQLUrlBuilder
+ * GraphQLPayloadBuilder
  */
-class GraphQLUrlBuilder
+class GraphQLPayloadBuilder
 {
     protected $queryType;
     protected $enums;
@@ -30,15 +30,15 @@ class GraphQLUrlBuilder
      */
     public function buildUrl(array $arguments, $fields = null)
     {
-        $arguments = $this->buildArguments($arguments);
+        // $arguments = $this->buildArguments($arguments);
 
-        if (is_null($fields)) {
-            return "?query={$this->queryType}{{$this->queryName}({$arguments})}";
-        }
+        // if (is_null($fields)) {
+        //     return "?query={$this->queryType}{{$this->queryName}({$arguments})}";
+        // }
 
-        $fields = $this->buildFields($fields);
+        // $fields = $this->buildFields($fields);
 
-        return "?query={$this->queryType}{{$this->queryName}({$arguments}){{$fields}}}";
+        // return "?query={$this->queryType}{{$this->queryName}({$arguments}){{$fields}}}";
     }
 
     /**
@@ -49,21 +49,21 @@ class GraphQLUrlBuilder
      */
     public function buildUpdateUrl($id, array $arguments, $fields = null)
     {
-        $arguments = $this->buildArguments($arguments);
-        $fields = $this->buildFields($fields);
+        // $arguments = $this->buildArguments($arguments);
+        // $fields = $this->buildFields($fields);
 
-        return "?query={$this->queryType}{{$this->queryName}(id:{$id}, {$arguments}){{$fields}}}";
+        // return "?query={$this->queryType}{{$this->queryName}(id:{$id}, {$arguments}){{$fields}}}";
     }
 
     /**
      * @param  array $fields
      * @return string
      */
-    public function buildListUrl($fields)
+    public function buildList($fields)
     {
         $fields = $this->buildFields($fields);
 
-        return "?query={$this->queryType}{{$this->queryName}{{$fields}}}";
+        return "{$this->queryType} { {$this->queryName} { {$fields} } }";
     }
 
     /**
@@ -71,11 +71,11 @@ class GraphQLUrlBuilder
      * @param  array $fields
      * @return string
      */
-    public function buildSingleUrl($id, $fields)
+    public function buildSingle($id, $fields)
     {
-        $fields = $this->buildFields($fields);
+        $fields = $this->createGraph($fields);
 
-        return "?query={$this->queryType}{{$this->queryName}(id:{$id}){{$fields}}}";
+        return "{$this->queryType} { {$this->queryName}(id:{$id}) {$fields} }";
     }
 
     /**
@@ -84,11 +84,11 @@ class GraphQLUrlBuilder
      * @param  array   $fields output fields
      * @return string
      */
-    public function buildPaginateUrl($limit = 1, $page = 1, $fields)
+    public function buildPaginate($limit = 1, $page = 1, $fields)
     {
         $fields = $this->buildFIelds($fields);
 
-        return "?query={$this->queryType}{{$this->queryName}(limit:{$limit},page:{$page}){data{{$fields}},total,per_page}}";
+        return "{$this->queryType} { {$this->queryName}(limit:{$limit},page:{$page}){data{$fields}},total,per_page }";
     }
 
     /**
@@ -136,6 +136,23 @@ class GraphQLUrlBuilder
         $newValues = array_values($enums);
 
         return str_replace($oldValues, $newValues, $arguments);
+    }
+
+    protected function createGraph(array $data) : string
+    {
+        $data = empty($data) ? $this->outputParams : $data;
+
+        $graph = "";
+        foreach($data as $query=>$node) {
+            if (is_array($node)) {
+                $graph .= "{$query} ";
+                $graph .= $this->createGraph($node);
+                continue;
+            }
+            $graph .= "{$node} ";
+        }
+
+        return "{ {$graph} } ";
     }
 
 }

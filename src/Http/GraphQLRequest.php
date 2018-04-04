@@ -31,20 +31,23 @@ abstract class GraphQLRequest
     {
         $this->baseUrl = $baseUrl;
         $this->client = new Client(['base_uri'=> $baseUrl]);
-        $this->headers = $headers;
+        $this->headers = array_merge($headers, ['Content-Type' => 'application/json', 'Accept' => 'application/json']);
     }
 
     /**
      * Do the request to the GraphQL api
      *
-     * @param  string $url GraphQL Url builded
+     * @param  string $query GraphQL query builded
      * @return array      The treated response
      */
-    protected function send($url)
+    protected function send($query)
     {
         $response = new GraphQLResponse(
-            $this->client->request('POST', $url, [
-                'headers' => $this->headers
+            $this->client->request('POST', '', [
+                'headers' => $this->headers,
+                'json' => [
+                    'query' => $query
+                ]
             ]),
             $this->queryName);
 
