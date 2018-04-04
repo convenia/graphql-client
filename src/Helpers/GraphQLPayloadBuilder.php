@@ -36,6 +36,13 @@ class GraphQLPayloadBuilder
         return "{$this->queryType} { {$this->queryName}({$arguments}) {$graph} }";
     }
 
+    public function buildGraphWithoutFields(array $arguments)
+    {
+        $arguments = $this->buildArguments($arguments);
+
+        return "{$this->queryType} { {$this->queryName}({$arguments}) }";
+    }
+
     /**
      * @param  int $id
      * @param  array  $arguments
