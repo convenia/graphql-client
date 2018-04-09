@@ -52,7 +52,7 @@ class GraphQLPayloadBuilder
     public function buildUpdate($id, array $arguments, $fields = null)
     {
         $arguments = $this->buildArguments($arguments);
-        $fields = $this->createGraph($fields);
+        $graph = $this->createGraph($fields);
 
         return "{$this->queryType} { {$this->queryName}(id:{$id} {$arguments}) {$graph} }";
     }
