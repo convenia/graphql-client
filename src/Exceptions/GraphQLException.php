@@ -2,30 +2,33 @@
 
 namespace Convenia\GraphQLClient\Exceptions;
 
-class GraphQLException
+use Exception;
+
+class GraphQLException extends Exception
 {
     /**
      * var array
      */
     protected $errors;
 
-    public function __construct($errors)
+    public function __construct($errors, $code = 200, Exception $previous = null)
     {
         $this->errors = $errors;
+        parent::__construct($this->getErrors(), $code, $previous);
     }
 
     /**
      * Get's every error returned by the request
      * @return stdClass
      */
-    public function getErrors()
+    protected function getErrors()
     {
         $errors = $this->mapErrors();
 
-        return [
+        return json_encode([
             'message' => 'One or more errors have occurred',
             'errors' => $errors
-        ];
+        ]);
     }
 
     /**

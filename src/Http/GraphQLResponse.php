@@ -49,7 +49,7 @@ class GraphQLResponse
         $decoded = $this->decodeResponse($response);
 
         if  (array_key_exists('errors', $decoded)) {
-            return $this->handleErrors($decoded['errors']);
+            throw new GraphQLException($decoded['errors'], $response->getStatusCode());
         }
 
         return $decoded['data'][$this->queryName];
@@ -66,16 +66,5 @@ class GraphQLResponse
         $response = $response->getBody()->getContents();
 
         return json_decode($response, true);
-    }
-
-    /**
-     * @param  Array $errors
-     * @return array
-     */
-    protected function handleErrors($errors)
-    {
-        $exception = new GraphQLException($errors);
-
-        return $exception->getErrors();
     }
 }
