@@ -25,8 +25,6 @@ class Query extends GraphQLRequest
         $payload = new GraphQLPayloadBuilder($this);
         $payload = $payload->buildList($fields);
 
-        var_dump($payload);
-
         return $this->send($payload);
     }
 
