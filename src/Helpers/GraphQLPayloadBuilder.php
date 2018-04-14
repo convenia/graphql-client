@@ -94,7 +94,7 @@ class GraphQLPayloadBuilder
     }
 
     /**
-     * Do the formatting of the input parameters and output fields into a GraphQL paginate
+     * Do the formatting of the input parameters and output fields into a GraphQL pagination
      *
      * @param integer $limit limit per page
      * @param integer $page page number
@@ -109,7 +109,7 @@ class GraphQLPayloadBuilder
     }
 
     /**
-     * build up all the arguments to send
+     * Build up all the arguments to send
      *
      * @param array $data Input arguments to send
      * @return string
@@ -127,7 +127,7 @@ class GraphQLPayloadBuilder
     }
 
     /**
-     * build up all enums to use in
+     * Build up all enums to use inside
      *
      * @param $data
      * @param $arguments
@@ -151,7 +151,7 @@ class GraphQLPayloadBuilder
     }
 
     /**
-     * create a GraphQL query string
+     * Create a GraphQL query string
      *
      * @param array $data
      * @return string
@@ -174,7 +174,7 @@ class GraphQLPayloadBuilder
     }
 
     /**
-     * build up an search query
+     * Build up a search query
      *
      * @param int $limit
      * @param int $page

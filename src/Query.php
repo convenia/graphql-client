@@ -13,7 +13,7 @@ class Query extends GraphQLRequest
     public $queryType = 'query';
 
     /**
-     * build a list request and return the response
+     * Build a list request and returns the response
      *
      * @param  array $fields
      * @return array
@@ -29,7 +29,7 @@ class Query extends GraphQLRequest
     }
 
     /**
-     * build a single request and return the response
+     * Build a single requests and return the response
      *
      * @param int $id
      * @param  array $fields
@@ -46,7 +46,7 @@ class Query extends GraphQLRequest
     }
 
     /**
-     * build a paginate request and return the response
+     * Build a paginate requests and return the response
      *
      * @param  integer $limit
      * @param  integer $page
@@ -64,7 +64,7 @@ class Query extends GraphQLRequest
     }
 
     /**
-     * build a paginate search and return the response
+     * Build a paginate search and returns the response
      *
      * @param array $arguments
      * @param array $fields
