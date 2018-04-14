@@ -8,17 +8,17 @@ use Convenia\GraphQLClient\Helpers\GraphQLPayloadBuilder;
 class Query extends GraphQLRequest
 {
     /**
-     * @param  int     $id
-     * @param  array      $arguments
-     * @param  array|null $fields
-     * @return array
+     * @var string
      */
     public $queryType = 'query';
 
     /**
+     * build a list request and return the response
      *
-     * @param  array  $fields
+     * @param  array $fields
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exceptions\GraphQLException
      */
     public function list(array $fields = [])
     {
@@ -29,9 +29,13 @@ class Query extends GraphQLRequest
     }
 
     /**
+     * build a single request and return the response
+     *
      * @param int $id
-     * @param  array  $fields
+     * @param  array $fields
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exceptions\GraphQLException
      */
     public function single($id, array $fields = [])
     {
@@ -42,10 +46,14 @@ class Query extends GraphQLRequest
     }
 
     /**
+     * build a paginate request and return the response
+     *
      * @param  integer $limit
      * @param  integer $page
-     * @param  array   $fields
+     * @param  array $fields
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exceptions\GraphQLException
      */
     public function paginate($limit = 1, $page = 1, array $fields)
     {
@@ -56,11 +64,15 @@ class Query extends GraphQLRequest
     }
 
     /**
+     * build a paginate search and return the response
+     *
      * @param array $arguments
      * @param array $fields
      * @param int $limit
      * @param int $page
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exceptions\GraphQLException
      */
     public function search(array $arguments, array $fields, $limit = 1, $page = 1)
     {

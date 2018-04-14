@@ -11,6 +11,7 @@ class GraphQLPayloadBuilder
     protected $enums;
     protected $baseUrl;
     protected $queryName;
+    protected $outputParams;
 
     public function __construct($query)
     {
@@ -23,8 +24,8 @@ class GraphQLPayloadBuilder
     /**
      * Do the formatting of the input parameters and output fields into a GraphQL string
      *
-     * @param  Array  $arguments Input Arguments to send
-     * @param  Array  $fields    Desired output fields, optional. If null the variable $outputParams of every query or mutation will be used as desired output
+     * @param array $arguments Input Arguments to send
+     * @param array $fields Desired output fields, optional. If null the variable $outputParams of every query or mutation will be used as desired output
      *
      * @return string  The graphQl query string
      */
@@ -36,6 +37,12 @@ class GraphQLPayloadBuilder
         return "{$this->queryType} { {$this->queryName}({$arguments}) {$graph} }";
     }
 
+    /**
+     * Do the formatting of the input parameters and output fields without fields into a GraphQL string
+     *
+     * @param array $arguments
+     * @return string
+     */
     public function buildGraphWithoutFields(array $arguments)
     {
         $arguments = $this->buildArguments($arguments);
@@ -44,8 +51,10 @@ class GraphQLPayloadBuilder
     }
 
     /**
+     * Do the formatting of the input parameters and output fields into a GraphQL update
+     *
      * @param  int $id
-     * @param  array  $arguments
+     * @param  array $arguments
      * @param  array|null $fields
      * @return String
      */
@@ -58,6 +67,8 @@ class GraphQLPayloadBuilder
     }
 
     /**
+     * Do the formatting of the input parameters and output fields into a GraphQL list query
+     *
      * @param  array $fields
      * @return string
      */
@@ -69,6 +80,8 @@ class GraphQLPayloadBuilder
     }
 
     /**
+     * Do the formatting of the input parameters and output fields into a GraphQL single
+     *
      * @param int $id
      * @param  array $fields
      * @return string
@@ -81,9 +94,11 @@ class GraphQLPayloadBuilder
     }
 
     /**
-     * @param  integer $limit  limit per page
-     * @param  integer $page   page number
-     * @param  array   $fields output fields
+     * Do the formatting of the input parameters and output fields into a GraphQL paginate
+     *
+     * @param integer $limit limit per page
+     * @param integer $page page number
+     * @param array $fields output fields
      * @return string
      */
     public function buildPaginate($limit = 1, $page = 1, $fields)
@@ -94,8 +109,10 @@ class GraphQLPayloadBuilder
     }
 
     /**
-     * @param  Arrray $data Input arguments to send
-     * @return string S
+     * build up all the arguments to send
+     *
+     * @param array $data Input arguments to send
+     * @return string
      */
     protected function buildArguments($data)
     {
@@ -109,6 +126,13 @@ class GraphQLPayloadBuilder
         return $this->buildEnums($data, $arguments);
     }
 
+    /**
+     * build up all enums to use in
+     *
+     * @param $data
+     * @param $arguments
+     * @return string
+     */
     protected function buildEnums($data, $arguments): string
     {
         $enums = array_intersect_key(
@@ -117,7 +141,7 @@ class GraphQLPayloadBuilder
         );
 
         $oldValues = array_map(function ($enum) {
-            return '"'.$enum.'"';
+            return '"' . $enum . '"';
         }, $enums);
 
         $oldValues = array_values($oldValues);
@@ -126,12 +150,18 @@ class GraphQLPayloadBuilder
         return str_replace($oldValues, $newValues, $arguments);
     }
 
-    protected function createGraph(array $data) : string
+    /**
+     * create a GraphQL query string
+     *
+     * @param array $data
+     * @return string
+     */
+    protected function createGraph(array $data): string
     {
         $data = empty($data) ? $this->outputParams : $data;
 
         $graph = "";
-        foreach($data as $query=>$node) {
+        foreach ($data as $query => $node) {
             if (is_array($node)) {
                 $graph .= "{$query} ";
                 $graph .= $this->createGraph($node);
@@ -144,6 +174,8 @@ class GraphQLPayloadBuilder
     }
 
     /**
+     * build up an search query
+     *
      * @param int $limit
      * @param int $page
      * @param $arguments

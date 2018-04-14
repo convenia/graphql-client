@@ -19,7 +19,8 @@ class GraphQLException extends Exception
 
     /**
      * Get's every error returned by the request
-     * @return stdClass
+     *
+     * @return string
      */
     protected function getErrors()
     {
@@ -33,11 +34,12 @@ class GraphQLException extends Exception
 
     /**
      * Maps every error into a single array
+     *
      * @return array
      */
     protected function mapErrors()
     {
-        return array_map(function($error) {
+        return array_map(function ($error) {
             return $error['message'];
         }, $this->errors);
     }
