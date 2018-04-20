@@ -16,7 +16,7 @@ class GraphQLResponse
     protected $response;
 
     /**
-     * The query name, this field should be setted in each mutation or query implemented
+     * The query name, this field should be configured in each mutation or query implemented
      *
      * @var string
      */
@@ -30,7 +30,9 @@ class GraphQLResponse
 
     /**
      * Gets the effective response
+     *
      * @return array
+     * @throws GraphQLException
      */
     public function getBody()
     {
@@ -40,15 +42,15 @@ class GraphQLResponse
     /**
      * Handles the response success or error
      *
-     * @param  GuzzleHttp\Psr7\Response $response
-     *
+     * @param  Response $response
      * @return array
+     * @throws GraphQLException
      */
     protected function handle($response)
     {
         $decoded = $this->decodeResponse($response);
 
-        if  (array_key_exists('errors', $decoded)) {
+        if (array_key_exists('errors', $decoded)) {
             throw new GraphQLException($decoded['errors'], $response->getStatusCode());
         }
 
@@ -58,10 +60,10 @@ class GraphQLResponse
     /**
      * Decodes the JSON response from GraphQL api
      *
-     * @param  Json $response
-     * @return Array
+     * @param string $response
+     * @return array
      */
-    protected function decodeResponse($response)
+    protected function decodeResponse(string $response)
     {
         $response = $response->getBody()->getContents();
 
