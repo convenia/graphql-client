@@ -60,10 +60,10 @@ class GraphQLResponse
     /**
      * Decodes the JSON response from GraphQL api
      *
-     * @param string $response
+     * @param $response
      * @return array
      */
-    protected function decodeResponse(string $response)
+    protected function decodeResponse($response)
     {
         $response = $response->getBody()->getContents();
 
